@@ -1,15 +1,15 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { PlateEditor, getSelectionText } from '@udecode/plate';
+import { PlateEditor, getSelectionText, insertText } from '@udecode/plate';
 import { enhancedTextExecutor } from '../GraphQL';
 
 export const useRephrase = () => {
-    const rephrase = (editor: PlateEditor) => {
+    const rephrase = async (editor: PlateEditor) => {
         const value = getSelectionText(editor);
-
-        enhancedTextExecutor({ text: value }).then((response) => {
-            console.log(response);
-        });
+        const response = await enhancedTextExecutor({ text: value });
+        if (response.enhancedText.summarized) {
+            insertText(editor, response.enhancedText.summarized);
+        }
     };
 
     return { rephrase };
