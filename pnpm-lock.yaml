@@ -160,6 +160,9 @@ importers:
       '@frontify/guideline-blocks-shared':
         specifier: workspace:*
         version: link:../shared
+      '@udecode/plate':
+        specifier: 21.4.2
+        version: 21.4.2(@babel/core@7.22.9)(@types/react-dom@18.2.1)(@types/react@18.0.35)(react-dnd-html5-backend@16.0.1)(react-dnd@16.0.1)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-hyperscript@0.77.0)(slate-react@0.97.1)(slate@0.94.1)(styled-components@5.3.6)
       lodash-es:
         specifier: 4.17.21
         version: 4.17.21
@@ -1680,7 +1683,7 @@ importers:
         version: 3.0.0-beta.67(react-dom@18.2.0)(react@18.2.0)(sinon@15.0.2)
       '@frontify/fondue':
         specifier: 12.0.0-beta.304
-        version: link:../../../fondue
+        version: 12.0.0-beta.304(@types/node@18.7.21)(@types/react@18.0.35)(@udecode/plate@21.4.2)(framer-motion@10.12.4)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.2.7)(ts-node@10.9.1)
       '@frontify/guideline-blocks-settings':
         specifier: 0.27.0
         version: 0.27.0(@types/node@18.7.21)(@types/react@18.0.35)(@udecode/plate@21.4.2)(framer-motion@10.12.4)(react-dom@18.2.0)(react@18.2.0)(sinon@15.0.2)(tailwindcss@3.2.7)(ts-node@10.9.1)
