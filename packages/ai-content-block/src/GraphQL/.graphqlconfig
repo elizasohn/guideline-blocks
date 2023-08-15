@@ -1,0 +1,4 @@
+{
+  "name": "Internal GraphQL Schema",
+  "schemaPath": "./../../data/graphql/schema/internal.graphql"
+}
