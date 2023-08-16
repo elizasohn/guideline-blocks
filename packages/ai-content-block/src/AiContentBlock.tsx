@@ -4,8 +4,24 @@ import { BlockProps } from '@frontify/guideline-blocks-settings';
 import { useBlockSettings, useEditorState } from '@frontify/app-bridge';
 import { ReactElement } from 'react';
 import { Settings } from './types';
-import { AiCopywriterPlugin, BoldPlugin, PluginComposer, RichTextEditor, SoftBreakPlugin } from '@frontify/fondue';
+import {
+    AiCopywriterPlugin,
+    BoldPlugin,
+    Heading1Plugin,
+    Heading2Plugin,
+    Heading3Plugin,
+    Heading4Plugin,
+    ItalicPlugin,
+    OrderedListPlugin,
+    ParagraphPlugin,
+    PluginComposer,
+    RichTextEditor,
+    SoftBreakPlugin,
+    TextStylePlugin,
+    UnorderedListPlugin,
+} from '@frontify/fondue';
 import { useDrunken, useShortener, useSummarizer } from './hooks';
+import { BlockStyles } from './styles';
 
 export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
     const isEditing = useEditorState(appBridge);
@@ -16,9 +32,31 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
     const { content } = blockSettings;
 
     const plugins = new PluginComposer();
-    plugins.setPlugin(
+    plugins.setPlugin([
+        new TextStylePlugin({
+            textStyles: [
+                new Heading1Plugin({
+                    styles: BlockStyles.heading1,
+                }),
+                new Heading2Plugin({
+                    styles: BlockStyles.heading2,
+                }),
+                new Heading3Plugin({
+                    styles: BlockStyles.heading3,
+                }),
+                new Heading4Plugin({
+                    styles: BlockStyles.heading4,
+                }),
+                new ParagraphPlugin({
+                    styles: BlockStyles.p,
+                }),
+            ],
+        }),
         new SoftBreakPlugin(),
         new BoldPlugin(),
+        new ItalicPlugin(),
+        new OrderedListPlugin(),
+        new UnorderedListPlugin(),
         new AiCopywriterPlugin({
             aiCopywriters: [
                 {
@@ -34,8 +72,8 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
                     function: shortener,
                 },
             ],
-        })
-    );
+        }),
+    ]);
 
     return (
         <RichTextEditor
