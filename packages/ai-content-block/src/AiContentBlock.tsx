@@ -20,8 +20,9 @@ import {
     TextStylePlugin,
     UnorderedListPlugin,
 } from '@frontify/fondue';
-import { useDrunken, useShortener, useSummarizer } from './hooks';
+import { useDrunken, useProperEnglish, useShortener, useSummarizer } from './hooks';
 import { BlockStyles } from './styles';
+import { useTranslator } from './hooks/useTranslator';
 
 export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
     const isEditing = useEditorState(appBridge);
@@ -29,6 +30,9 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
     const { drunken } = useDrunken();
     const { summarize } = useSummarizer();
     const { shortener } = useShortener();
+    const { properEnglish } = useProperEnglish();
+    const language = appBridge.getTranslationLanguage();
+    const { translate } = useTranslator(language);
     const { content } = blockSettings;
 
     const plugins = new PluginComposer();
@@ -62,6 +66,14 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
                 {
                     label: 'Drunken',
                     function: drunken,
+                },
+                {
+                    label: 'Translate to swiss german',
+                    function: translate,
+                },
+                {
+                    label: 'Use Proper English',
+                    function: properEnglish,
                 },
                 {
                     label: 'Summarize',
