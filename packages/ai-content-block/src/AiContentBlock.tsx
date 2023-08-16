@@ -4,17 +4,21 @@ import { BlockProps } from '@frontify/guideline-blocks-settings';
 import { useBlockSettings, useEditorState } from '@frontify/app-bridge';
 import { ReactElement } from 'react';
 import { Settings } from './types';
-import { AiCopywriterPlugin, PluginComposer, RichTextEditor } from '@frontify/fondue';
-import { useRephrase } from './hooks';
+import { AiCopywriterPlugin, BoldPlugin, PluginComposer, RichTextEditor, SoftBreakPlugin } from '@frontify/fondue';
+import { useRephrase, useShortener, useSummarizer } from './hooks';
 
 export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
     const isEditing = useEditorState(appBridge);
     const [blockSettings, setBlockSettings] = useBlockSettings<Settings>(appBridge);
     const { rephrase } = useRephrase();
+    const { summarize } = useSummarizer();
+    const { shortener } = useShortener();
     const { content } = blockSettings;
 
     const plugins = new PluginComposer();
     plugins.setPlugin(
+        new SoftBreakPlugin(),
+        new BoldPlugin(),
         new AiCopywriterPlugin({
             aiCopywriters: [
                 {
@@ -23,11 +27,11 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
                 },
                 {
                     label: 'Summarize',
-                    function: () => console.log('Summarize'),
+                    function: summarize,
                 },
                 {
-                    label: 'Simplify',
-                    function: () => console.log('Simplify'),
+                    label: 'Shorten',
+                    function: shortener,
                 },
             ],
         })
