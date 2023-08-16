@@ -5,12 +5,12 @@ import { useBlockSettings, useEditorState } from '@frontify/app-bridge';
 import { ReactElement } from 'react';
 import { Settings } from './types';
 import { AiCopywriterPlugin, BoldPlugin, PluginComposer, RichTextEditor, SoftBreakPlugin } from '@frontify/fondue';
-import { useRephrase, useShortener, useSummarizer } from './hooks';
+import { useDrunken, useShortener, useSummarizer } from './hooks';
 
 export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
     const isEditing = useEditorState(appBridge);
     const [blockSettings, setBlockSettings] = useBlockSettings<Settings>(appBridge);
-    const { rephrase } = useRephrase();
+    const { drunken } = useDrunken();
     const { summarize } = useSummarizer();
     const { shortener } = useShortener();
     const { content } = blockSettings;
@@ -22,8 +22,8 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
         new AiCopywriterPlugin({
             aiCopywriters: [
                 {
-                    label: 'Rephrase',
-                    function: rephrase,
+                    label: 'Drunken',
+                    function: drunken,
                 },
                 {
                     label: 'Summarize',

@@ -2511,10 +2511,21 @@ export type EnableWorkflowStatusEnterRuleInput = {
 
 export type EnhancedText = {
   __typename?: 'EnhancedText';
+  /** **INTERNAL** Drunken pirate text. */
+  drunken?: Maybe<Scalars['String']['output']>;
+  /** **INTERNAL** Proper text. */
+  properEnglish?: Maybe<Scalars['String']['output']>;
   /** **INTERNAL** A shortened version of the text. */
   shortened?: Maybe<Scalars['String']['output']>;
   /** **INTERNAL** A summarized version of the text. */
   summarized?: Maybe<Scalars['String']['output']>;
+  /** **INTERNAL** Translated text. */
+  translated?: Maybe<Scalars['String']['output']>;
+};
+
+
+export type EnhancedTextTranslatedArgs = {
+  language: Scalars['String']['input'];
 };
 
 export type ExternalProduct = {
@@ -5884,6 +5895,28 @@ export type EnhancedTextShortenQueryVariables = Exact<{
 
 export type EnhancedTextShortenQuery = { __typename?: 'RootQuery', enhancedText: { __typename?: 'EnhancedText', shortened?: string | null } };
 
+export type EnhancedTextTranslationQueryVariables = Exact<{
+  text: Scalars['String']['input'];
+  language: Scalars['String']['input'];
+}>;
+
+
+export type EnhancedTextTranslationQuery = { __typename?: 'RootQuery', enhancedText: { __typename?: 'EnhancedText', translated?: string | null } };
+
+export type EnhancedTextProperEnglishQueryVariables = Exact<{
+  text: Scalars['String']['input'];
+}>;
+
+
+export type EnhancedTextProperEnglishQuery = { __typename?: 'RootQuery', enhancedText: { __typename?: 'EnhancedText', properEnglish?: string | null } };
+
+export type EnhancedTextDrunkenPirateQueryVariables = Exact<{
+  text: Scalars['String']['input'];
+}>;
+
+
+export type EnhancedTextDrunkenPirateQuery = { __typename?: 'RootQuery', enhancedText: { __typename?: 'EnhancedText', drunken?: string | null } };
+
 export type GetSavedLibraryAssetsQueryVariables = Exact<{
   projectId: Scalars['ID']['input'];
   externalId: Scalars['ID']['input'];
@@ -6680,6 +6713,21 @@ export const enhancedTextSummaryExecutor = (variables: EnhancedTextSummaryQueryV
 export const enhancedTextShortenExecutor = (variables: EnhancedTextShortenQueryVariables) => requester<EnhancedTextShortenQuery, EnhancedTextShortenQueryVariables>(`query EnhancedTextShorten($text: String!) {
   enhancedText(text: $text) {
     shortened
+  }
+} `, variables)
+export const enhancedTextTranslationExecutor = (variables: EnhancedTextTranslationQueryVariables) => requester<EnhancedTextTranslationQuery, EnhancedTextTranslationQueryVariables>(`query EnhancedTextTranslation($text: String!, $language: String!) {
+  enhancedText(text: $text) {
+    translated(language: $language)
+  }
+} `, variables)
+export const enhancedTextProperEnglishExecutor = (variables: EnhancedTextProperEnglishQueryVariables) => requester<EnhancedTextProperEnglishQuery, EnhancedTextProperEnglishQueryVariables>(`query EnhancedTextProperEnglish($text: String!) {
+  enhancedText(text: $text) {
+    properEnglish
+  }
+} `, variables)
+export const enhancedTextDrunkenPirateExecutor = (variables: EnhancedTextDrunkenPirateQueryVariables) => requester<EnhancedTextDrunkenPirateQuery, EnhancedTextDrunkenPirateQueryVariables>(`query EnhancedTextDrunkenPirate($text: String!) {
+  enhancedText(text: $text) {
+    drunken
   }
 } `, variables)
 
@@ -8258,6 +8306,75 @@ export const useEnhancedTextShortenQuery = <
     );
 
 useEnhancedTextShortenQuery.getKey = (variables: EnhancedTextShortenQueryVariables) => ['EnhancedTextShorten', variables];
+;
+
+export const EnhancedTextTranslationDocument = `
+    query EnhancedTextTranslation($text: String!, $language: String!) {
+  enhancedText(text: $text) {
+    translated(language: $language)
+  }
+}
+    `;
+export const useEnhancedTextTranslationQuery = <
+      TData = EnhancedTextTranslationQuery,
+      TError = unknown
+    >(
+      variables: EnhancedTextTranslationQueryVariables,
+      options?: UseQueryOptions<EnhancedTextTranslationQuery, TError, TData>
+    ) =>
+    useQuery<EnhancedTextTranslationQuery, TError, TData>(
+      ['EnhancedTextTranslation', variables],
+      fetcher<EnhancedTextTranslationQuery, EnhancedTextTranslationQueryVariables>(EnhancedTextTranslationDocument, variables),
+      options
+    );
+
+useEnhancedTextTranslationQuery.getKey = (variables: EnhancedTextTranslationQueryVariables) => ['EnhancedTextTranslation', variables];
+;
+
+export const EnhancedTextProperEnglishDocument = `
+    query EnhancedTextProperEnglish($text: String!) {
+  enhancedText(text: $text) {
+    properEnglish
+  }
+}
+    `;
+export const useEnhancedTextProperEnglishQuery = <
+      TData = EnhancedTextProperEnglishQuery,
+      TError = unknown
+    >(
+      variables: EnhancedTextProperEnglishQueryVariables,
+      options?: UseQueryOptions<EnhancedTextProperEnglishQuery, TError, TData>
+    ) =>
+    useQuery<EnhancedTextProperEnglishQuery, TError, TData>(
+      ['EnhancedTextProperEnglish', variables],
+      fetcher<EnhancedTextProperEnglishQuery, EnhancedTextProperEnglishQueryVariables>(EnhancedTextProperEnglishDocument, variables),
+      options
+    );
+
+useEnhancedTextProperEnglishQuery.getKey = (variables: EnhancedTextProperEnglishQueryVariables) => ['EnhancedTextProperEnglish', variables];
+;
+
+export const EnhancedTextDrunkenPirateDocument = `
+    query EnhancedTextDrunkenPirate($text: String!) {
+  enhancedText(text: $text) {
+    drunken
+  }
+}
+    `;
+export const useEnhancedTextDrunkenPirateQuery = <
+      TData = EnhancedTextDrunkenPirateQuery,
+      TError = unknown
+    >(
+      variables: EnhancedTextDrunkenPirateQueryVariables,
+      options?: UseQueryOptions<EnhancedTextDrunkenPirateQuery, TError, TData>
+    ) =>
+    useQuery<EnhancedTextDrunkenPirateQuery, TError, TData>(
+      ['EnhancedTextDrunkenPirate', variables],
+      fetcher<EnhancedTextDrunkenPirateQuery, EnhancedTextDrunkenPirateQueryVariables>(EnhancedTextDrunkenPirateDocument, variables),
+      options
+    );
+
+useEnhancedTextDrunkenPirateQuery.getKey = (variables: EnhancedTextDrunkenPirateQueryVariables) => ['EnhancedTextDrunkenPirate', variables];
 ;
 
 export const GetSavedLibraryAssetsDocument = `
