@@ -27,13 +27,15 @@ import { useTranslator } from './hooks/useTranslator';
 export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
     const isEditing = useEditorState(appBridge);
     const [blockSettings, setBlockSettings] = useBlockSettings<Settings>(appBridge);
-    const { drunken } = useDrunken();
-    const { summarize } = useSummarizer();
-    const { shortener } = useShortener();
-    const { properEnglish } = useProperEnglish();
-    const language = appBridge.getTranslationLanguage();
-    const { translate } = useTranslator(language);
+    const { drunken, isDrunkenLoading } = useDrunken();
+    const { summarize, isSummarizerLoading } = useSummarizer();
+    const { shortener, isShortenerLoading } = useShortener();
+    const { properEnglish, isProperEnglishLoading } = useProperEnglish();
+    const { translate, isTranslatorLoading } = useTranslator('swissGerman');
     const { content } = blockSettings;
+
+    const isLoading =
+        isDrunkenLoading || isSummarizerLoading || isShortenerLoading || isProperEnglishLoading || isTranslatorLoading;
 
     const plugins = new PluginComposer();
     plugins.setPlugin([
@@ -62,13 +64,14 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
         new OrderedListPlugin(),
         new UnorderedListPlugin(),
         new AiCopywriterPlugin({
+            isLoading,
             aiCopywriters: [
                 {
-                    label: 'Drunken',
+                    label: 'Drunken Pirate',
                     function: drunken,
                 },
                 {
-                    label: 'Translate to swiss german',
+                    label: 'Translate to Schweizerdeutsch',
                     function: translate,
                 },
                 {
