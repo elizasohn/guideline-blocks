@@ -1,8 +1,9 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { PlateEditor, getSelectionText, insertText } from '@udecode/plate';
+import { PlateEditor, TDescendant, getSelectionText } from '@udecode/plate';
 import { enhancedTextTranslationExecutor } from '../GraphQL';
 import { useState } from 'react';
+import { markdownToSlate } from '../helper';
 
 export const useTranslator = (language: string) => {
     const [isTranslatorLoading, setIsTranslatorLoading] = useState(false);
@@ -12,7 +13,10 @@ export const useTranslator = (language: string) => {
         setIsTranslatorLoading(true);
         const response = await enhancedTextTranslationExecutor({ text: value, language });
         if (response.enhancedText.translated) {
-            insertText(editor, response.enhancedText.translated);
+            const nodes = markdownToSlate(response.enhancedText.translated);
+            for (const node of nodes) {
+                editor.insertNode(node as TDescendant);
+            }
         }
         setIsTranslatorLoading(false);
     };

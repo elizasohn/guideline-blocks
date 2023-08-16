@@ -1,9 +1,9 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { PlateEditor, TDescendant, TNode, getSelectionText } from '@udecode/plate';
+import { PlateEditor, TDescendant, getSelectionText } from '@udecode/plate';
 import { enhancedTextSummaryExecutor } from '../GraphQL';
 import { useState } from 'react';
-import { MarkdownToSlate, Transform, TreeOfNodes } from '@frontify/fondue';
+import { markdownToSlate } from '../helper';
 
 export const useSummarizer = () => {
     const [isSummarizerLoading, setIsSummarizerLoading] = useState(false);
@@ -13,12 +13,8 @@ export const useSummarizer = () => {
         setIsSummarizerLoading(true);
         const response = await enhancedTextSummaryExecutor({ text: value });
         if (response.enhancedText.summarized) {
-            const treeNodes = Transform.use<string, TreeOfNodes>(new MarkdownToSlate()).process(
-                response.enhancedText.summarized
-            ) as TNode[];
-
-            for (const node of treeNodes) {
-                console.log(node);
+            const nodes = markdownToSlate(response.enhancedText.summarized);
+            for (const node of nodes) {
                 editor.insertNode(node as TDescendant);
             }
         }

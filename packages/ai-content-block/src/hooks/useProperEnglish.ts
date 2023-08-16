@@ -1,8 +1,9 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { PlateEditor, getSelectionText, insertText } from '@udecode/plate';
+import { PlateEditor, TDescendant, getSelectionText, insertText } from '@udecode/plate';
 import { enhancedTextProperEnglishExecutor } from '../GraphQL';
 import { useState } from 'react';
+import { markdownToSlate } from '../helper';
 
 export const useProperEnglish = () => {
     const [isProperEnglishLoading, setIsProperEnglishLoading] = useState(false);
@@ -12,6 +13,10 @@ export const useProperEnglish = () => {
         setIsProperEnglishLoading(true);
         const response = await enhancedTextProperEnglishExecutor({ text: value });
         if (response.enhancedText.properEnglish) {
+            const nodes = markdownToSlate(response.enhancedText.properEnglish);
+            for (const node of nodes) {
+                editor.insertNode(node as TDescendant);
+            }
             insertText(editor, response.enhancedText.properEnglish);
         }
         setIsProperEnglishLoading(false);
