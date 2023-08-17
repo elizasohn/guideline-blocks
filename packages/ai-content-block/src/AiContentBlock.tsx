@@ -92,15 +92,15 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
                     function: translate,
                 },
                 {
-                    label: 'Use Proper English',
+                    label: 'Fix my grammar',
                     function: properEnglish,
                 },
                 {
-                    label: 'Keytakeaways',
+                    label: 'add Key Takeaways',
                     function: keytakeaways,
                 },
                 {
-                    label: 'Shorten',
+                    label: 'Make this shorter',
                     function: shortener,
                 },
             ],

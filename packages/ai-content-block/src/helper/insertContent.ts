@@ -5,7 +5,6 @@ import { markdownToSlate } from './markdownToSlate';
 
 export const insertContent = (editor: PlateEditor, content: string) => {
     const nodes = markdownToSlate(content);
-    console.log(nodes);
     if (nodes.length === 1 && !nodes[0].children) {
         editor.insertText(content);
     } else {
