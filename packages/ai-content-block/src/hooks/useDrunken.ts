@@ -1,9 +1,9 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { PlateEditor, TDescendant, getSelectionText } from '@udecode/plate';
+import { PlateEditor, getSelectionText } from '@udecode/plate';
 import { enhancedTextDrunkenPirateExecutor } from '../GraphQL';
 import { useState } from 'react';
-import { markdownToSlate } from '../helper';
+import { insertContent } from '../helper';
 
 export const useDrunken = () => {
     const [isDrunkenLoading, setIsDrunkenLoading] = useState(false);
@@ -12,10 +12,7 @@ export const useDrunken = () => {
         setIsDrunkenLoading(true);
         const response = await enhancedTextDrunkenPirateExecutor({ text: value });
         if (response.enhancedText.drunken) {
-            const nodes = markdownToSlate(response.enhancedText.drunken);
-            for (const node of nodes) {
-                editor.insertNode(node as TDescendant);
-            }
+            insertContent(editor, response.enhancedText.drunken);
         }
         setIsDrunkenLoading(false);
     };

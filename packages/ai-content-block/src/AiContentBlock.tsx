@@ -26,7 +26,7 @@ import {
 import { useDrunken, useProperEnglish, useShortener, useSummarizer } from './hooks';
 import { useTranslator } from './hooks/useTranslator';
 import { AiCopywriterPlugin } from './Plugin/AiCopyWriterPlugin';
-import { AllTextStylePlugins, AllTextStyles } from '@frontify/guideline-blocks-shared';
+import { AllTextStylePlugins, AllTextStyles, ButtonPlugin, LinkPlugin } from '@frontify/guideline-blocks-shared';
 
 export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
     const isEditing = useEditorState(appBridge);
@@ -52,6 +52,8 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
         new UnderlinePlugin(),
         new StrikethroughPlugin(),
         new CodePlugin(),
+        new LinkPlugin({ appBridge }),
+        new ButtonPlugin({ appBridge }),
         new AlignLeftPlugin({
             validTypes: AllTextStyles,
         }),
@@ -76,7 +78,7 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
                     function: drunken,
                 },
                 {
-                    label: 'Translate to Schweizerdeutsch',
+                    label: 'Translate to Swiss German',
                     function: translate,
                 },
                 {

@@ -1,9 +1,9 @@
 /* (c) Copyright Frontify Ltd., all rights reserved. */
 
-import { PlateEditor, TDescendant, getSelectionText } from '@udecode/plate';
+import { PlateEditor, getSelectionText } from '@udecode/plate';
 import { enhancedTextSummaryExecutor } from '../GraphQL';
 import { useState } from 'react';
-import { markdownToSlate } from '../helper';
+import { insertContent } from '../helper/insertContent';
 
 export const useSummarizer = () => {
     const [isSummarizerLoading, setIsSummarizerLoading] = useState(false);
@@ -13,10 +13,7 @@ export const useSummarizer = () => {
         setIsSummarizerLoading(true);
         const response = await enhancedTextSummaryExecutor({ text: value });
         if (response.enhancedText.summarized) {
-            const nodes = markdownToSlate(response.enhancedText.summarized);
-            for (const node of nodes) {
-                editor.insertNode(node as TDescendant);
-            }
+            insertContent(editor, response.enhancedText.summarized);
         }
         setIsSummarizerLoading(false);
     };
