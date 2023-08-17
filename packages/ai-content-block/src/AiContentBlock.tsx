@@ -23,7 +23,7 @@ import {
     UnderlinePlugin,
     UnorderedListPlugin,
 } from '@frontify/fondue';
-import { useDrunken, useProperEnglish, useShortener, useSummarizer } from './hooks';
+import { useDrunken, useKeytakeaways, usePrompted, useProperEnglish, useShortener } from './hooks';
 import { useTranslator } from './hooks/useTranslator';
 import { AiCopywriterPlugin } from './Plugin/AiCopyWriterPlugin';
 import { AllTextStylePlugins, AllTextStyles, ButtonPlugin, LinkPlugin } from '@frontify/guideline-blocks-shared';
@@ -32,14 +32,20 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
     const isEditing = useEditorState(appBridge);
     const [blockSettings, setBlockSettings] = useBlockSettings<Settings>(appBridge);
     const { drunken, isDrunkenLoading } = useDrunken();
-    const { summarize, isSummarizerLoading } = useSummarizer();
     const { shortener, isShortenerLoading } = useShortener();
     const { properEnglish, isProperEnglishLoading } = useProperEnglish();
+    const { prompted, isPromptedLoading } = usePrompted();
     const { translate, isTranslatorLoading } = useTranslator('swissGerman');
+    const { keytakeaways, isKeytakeawaysLoading } = useKeytakeaways();
     const { content } = blockSettings;
 
     const isLoading =
-        isDrunkenLoading || isSummarizerLoading || isShortenerLoading || isProperEnglishLoading || isTranslatorLoading;
+        isDrunkenLoading ||
+        isShortenerLoading ||
+        isProperEnglishLoading ||
+        isTranslatorLoading ||
+        isKeytakeawaysLoading ||
+        isPromptedLoading;
 
     const plugins = new PluginComposer();
     plugins.setPlugin([
@@ -74,6 +80,10 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
             isLoading,
             aiCopywriters: [
                 {
+                    label: 'Plain Prompt',
+                    function: prompted,
+                },
+                {
                     label: 'Drunken Pirate',
                     function: drunken,
                 },
@@ -86,8 +96,8 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
                     function: properEnglish,
                 },
                 {
-                    label: 'Summarize',
-                    function: summarize,
+                    label: 'Keytakeaways',
+                    function: keytakeaways,
                 },
                 {
                     label: 'Shorten',

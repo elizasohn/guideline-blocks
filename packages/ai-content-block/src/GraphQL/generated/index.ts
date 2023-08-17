@@ -2513,12 +2513,14 @@ export type EnhancedText = {
   __typename?: 'EnhancedText';
   /** **INTERNAL** Drunken pirate text. */
   drunken?: Maybe<Scalars['String']['output']>;
+  /** **INTERNAL** Get the key takeaways from the text. */
+  keyTakeaways?: Maybe<Scalars['String']['output']>;
+  /** **INTERNAL** Get the result for the text used a prompt. */
+  prompted?: Maybe<Scalars['String']['output']>;
   /** **INTERNAL** Proper text. */
   properEnglish?: Maybe<Scalars['String']['output']>;
   /** **INTERNAL** A shortened version of the text. */
   shortened?: Maybe<Scalars['String']['output']>;
-  /** **INTERNAL** A summarized version of the text. */
-  summarized?: Maybe<Scalars['String']['output']>;
   /** **INTERNAL** Translated text. */
   translated?: Maybe<Scalars['String']['output']>;
 };
@@ -2713,6 +2715,14 @@ export type GrantSubjectsAnalyticsDashboardAccessInput = {
   subjectIds?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
+export type GuideLinePage = {
+  __typename?: 'GuideLinePage';
+  /** **INTERNAL** The name of the page. */
+  name: Scalars['String']['output'];
+  /** **INTERNAL** Get some information */
+  summary?: Maybe<Scalars['String']['output']>;
+};
+
 export type Guideline = Node & {
   __typename?: 'Guideline';
   /** `Guideline` color. */
@@ -2723,6 +2733,8 @@ export type Guideline = Node & {
   libraryPages: LibraryPageItems;
   /** `Guideline` name. */
   name?: Maybe<Scalars['String']['output']>;
+  /** **INTERNAL** Paginated list of `GuidelinePage` items for `Guideline`. */
+  pages: GuidelinePageItems;
   /** `Guideline` internal url. */
   url: Scalars['Url']['output'];
 };
@@ -2733,12 +2745,32 @@ export type GuidelineLibraryPagesArgs = {
   page?: InputMaybe<Scalars['Int']['input']>;
 };
 
+
+export type GuidelinePagesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export type GuidelineItems = {
   __typename?: 'GuidelineItems';
   /** Indicates if a next page is available or not */
   hasNextPage: Scalars['Boolean']['output'];
   /** List of `Guideline` type projects. */
   items?: Maybe<Array<Maybe<Guideline>>>;
+  /** Number of results per page. */
+  limit: Scalars['Int']['output'];
+  /** Current page number. */
+  page: Scalars['Int']['output'];
+  /** Total amount of results. */
+  total: Scalars['Int']['output'];
+};
+
+export type GuidelinePageItems = {
+  __typename?: 'GuidelinePageItems';
+  /** Indicates if a next page is available or not */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** **INTERNAL** List of type `LibraryPage`. */
+  items?: Maybe<Array<Maybe<GuideLinePage>>>;
   /** Number of results per page. */
   limit: Scalars['Int']['output'];
   /** Current page number. */
@@ -5881,13 +5913,6 @@ export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type CurrentUserQuery = { __typename?: 'RootQuery', currentUser: { __typename?: 'AccountUser', email: any, name?: string | null, avatar?: any | null, gravatarHash?: string | null, globalObjectId: string, permissions?: { __typename?: 'UserPermissions', analyticsDashboard?: { __typename?: 'AnalyticsDashboardUserPermission', canView: boolean } | null } | null } };
 
-export type EnhancedTextSummaryQueryVariables = Exact<{
-  text: Scalars['String']['input'];
-}>;
-
-
-export type EnhancedTextSummaryQuery = { __typename?: 'RootQuery', enhancedText: { __typename?: 'EnhancedText', summarized?: string | null } };
-
 export type EnhancedTextShortenQueryVariables = Exact<{
   text: Scalars['String']['input'];
 }>;
@@ -5916,6 +5941,20 @@ export type EnhancedTextDrunkenPirateQueryVariables = Exact<{
 
 
 export type EnhancedTextDrunkenPirateQuery = { __typename?: 'RootQuery', enhancedText: { __typename?: 'EnhancedText', drunken?: string | null } };
+
+export type EnhancedTextKeyTakeawaysQueryVariables = Exact<{
+  text: Scalars['String']['input'];
+}>;
+
+
+export type EnhancedTextKeyTakeawaysQuery = { __typename?: 'RootQuery', enhancedText: { __typename?: 'EnhancedText', keyTakeaways?: string | null } };
+
+export type EnhancedTextPromptedQueryVariables = Exact<{
+  text: Scalars['String']['input'];
+}>;
+
+
+export type EnhancedTextPromptedQuery = { __typename?: 'RootQuery', enhancedText: { __typename?: 'EnhancedText', prompted?: string | null } };
 
 export type GetSavedLibraryAssetsQueryVariables = Exact<{
   projectId: Scalars['ID']['input'];
@@ -6705,11 +6744,6 @@ export const currentUserExecutor = () => requester<CurrentUserQuery, undefined>(
   }
 } `, undefined)
 
-export const enhancedTextSummaryExecutor = (variables: EnhancedTextSummaryQueryVariables) => requester<EnhancedTextSummaryQuery, EnhancedTextSummaryQueryVariables>(`query EnhancedTextSummary($text: String!) {
-  enhancedText(text: $text) {
-    summarized
-  }
-} `, variables)
 export const enhancedTextShortenExecutor = (variables: EnhancedTextShortenQueryVariables) => requester<EnhancedTextShortenQuery, EnhancedTextShortenQueryVariables>(`query EnhancedTextShorten($text: String!) {
   enhancedText(text: $text) {
     shortened
@@ -6728,6 +6762,16 @@ export const enhancedTextProperEnglishExecutor = (variables: EnhancedTextProperE
 export const enhancedTextDrunkenPirateExecutor = (variables: EnhancedTextDrunkenPirateQueryVariables) => requester<EnhancedTextDrunkenPirateQuery, EnhancedTextDrunkenPirateQueryVariables>(`query EnhancedTextDrunkenPirate($text: String!) {
   enhancedText(text: $text) {
     drunken
+  }
+} `, variables)
+export const enhancedTextKeyTakeawaysExecutor = (variables: EnhancedTextKeyTakeawaysQueryVariables) => requester<EnhancedTextKeyTakeawaysQuery, EnhancedTextKeyTakeawaysQueryVariables>(`query EnhancedTextKeyTakeaways($text: String!) {
+  enhancedText(text: $text) {
+    keyTakeaways
+  }
+} `, variables)
+export const enhancedTextPromptedExecutor = (variables: EnhancedTextPromptedQueryVariables) => requester<EnhancedTextPromptedQuery, EnhancedTextPromptedQueryVariables>(`query EnhancedTextPrompted($text: String!) {
+  enhancedText(text: $text) {
+    prompted
   }
 } `, variables)
 
@@ -8262,29 +8306,6 @@ export const useCurrentUserQuery = <
 useCurrentUserQuery.getKey = (variables?: CurrentUserQueryVariables) => variables === undefined ? ['CurrentUser'] : ['CurrentUser', variables];
 ;
 
-export const EnhancedTextSummaryDocument = `
-    query EnhancedTextSummary($text: String!) {
-  enhancedText(text: $text) {
-    summarized
-  }
-}
-    `;
-export const useEnhancedTextSummaryQuery = <
-      TData = EnhancedTextSummaryQuery,
-      TError = unknown
-    >(
-      variables: EnhancedTextSummaryQueryVariables,
-      options?: UseQueryOptions<EnhancedTextSummaryQuery, TError, TData>
-    ) =>
-    useQuery<EnhancedTextSummaryQuery, TError, TData>(
-      ['EnhancedTextSummary', variables],
-      fetcher<EnhancedTextSummaryQuery, EnhancedTextSummaryQueryVariables>(EnhancedTextSummaryDocument, variables),
-      options
-    );
-
-useEnhancedTextSummaryQuery.getKey = (variables: EnhancedTextSummaryQueryVariables) => ['EnhancedTextSummary', variables];
-;
-
 export const EnhancedTextShortenDocument = `
     query EnhancedTextShorten($text: String!) {
   enhancedText(text: $text) {
@@ -8375,6 +8396,52 @@ export const useEnhancedTextDrunkenPirateQuery = <
     );
 
 useEnhancedTextDrunkenPirateQuery.getKey = (variables: EnhancedTextDrunkenPirateQueryVariables) => ['EnhancedTextDrunkenPirate', variables];
+;
+
+export const EnhancedTextKeyTakeawaysDocument = `
+    query EnhancedTextKeyTakeaways($text: String!) {
+  enhancedText(text: $text) {
+    keyTakeaways
+  }
+}
+    `;
+export const useEnhancedTextKeyTakeawaysQuery = <
+      TData = EnhancedTextKeyTakeawaysQuery,
+      TError = unknown
+    >(
+      variables: EnhancedTextKeyTakeawaysQueryVariables,
+      options?: UseQueryOptions<EnhancedTextKeyTakeawaysQuery, TError, TData>
+    ) =>
+    useQuery<EnhancedTextKeyTakeawaysQuery, TError, TData>(
+      ['EnhancedTextKeyTakeaways', variables],
+      fetcher<EnhancedTextKeyTakeawaysQuery, EnhancedTextKeyTakeawaysQueryVariables>(EnhancedTextKeyTakeawaysDocument, variables),
+      options
+    );
+
+useEnhancedTextKeyTakeawaysQuery.getKey = (variables: EnhancedTextKeyTakeawaysQueryVariables) => ['EnhancedTextKeyTakeaways', variables];
+;
+
+export const EnhancedTextPromptedDocument = `
+    query EnhancedTextPrompted($text: String!) {
+  enhancedText(text: $text) {
+    prompted
+  }
+}
+    `;
+export const useEnhancedTextPromptedQuery = <
+      TData = EnhancedTextPromptedQuery,
+      TError = unknown
+    >(
+      variables: EnhancedTextPromptedQueryVariables,
+      options?: UseQueryOptions<EnhancedTextPromptedQuery, TError, TData>
+    ) =>
+    useQuery<EnhancedTextPromptedQuery, TError, TData>(
+      ['EnhancedTextPrompted', variables],
+      fetcher<EnhancedTextPromptedQuery, EnhancedTextPromptedQueryVariables>(EnhancedTextPromptedDocument, variables),
+      options
+    );
+
+useEnhancedTextPromptedQuery.getKey = (variables: EnhancedTextPromptedQueryVariables) => ['EnhancedTextPrompted', variables];
 ;
 
 export const GetSavedLibraryAssetsDocument = `
