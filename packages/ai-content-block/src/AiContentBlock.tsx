@@ -5,8 +5,13 @@ import { useBlockSettings, useEditorState } from '@frontify/app-bridge';
 import { ReactElement } from 'react';
 import { Settings } from './types';
 import {
-    AiCopywriterPlugin,
+    AlignCenterPlugin,
+    AlignJustifyPlugin,
+    AlignLeftPlugin,
+    AlignRightPlugin,
     BoldPlugin,
+    CheckboxListPlugin,
+    CodePlugin,
     Heading1Plugin,
     Heading2Plugin,
     Heading3Plugin,
@@ -15,14 +20,18 @@ import {
     OrderedListPlugin,
     ParagraphPlugin,
     PluginComposer,
+    ResetFormattingPlugin,
     RichTextEditor,
     SoftBreakPlugin,
+    StrikethroughPlugin,
     TextStylePlugin,
+    UnderlinePlugin,
     UnorderedListPlugin,
 } from '@frontify/fondue';
 import { useDrunken, useProperEnglish, useShortener, useSummarizer } from './hooks';
 import { BlockStyles } from './styles';
 import { useTranslator } from './hooks/useTranslator';
+import { AiCopywriterPlugin } from './Plugin/AiCopyWriterPlugin';
 
 export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
     const isEditing = useEditorState(appBridge);
@@ -61,8 +70,17 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
         new SoftBreakPlugin(),
         new BoldPlugin(),
         new ItalicPlugin(),
-        new OrderedListPlugin(),
+        new UnderlinePlugin(),
+        new StrikethroughPlugin(),
+        new CodePlugin(),
+        new AlignLeftPlugin(),
+        new AlignCenterPlugin(),
+        new AlignRightPlugin(),
+        new AlignJustifyPlugin(),
         new UnorderedListPlugin(),
+        new CheckboxListPlugin(),
+        new OrderedListPlugin(),
+        new ResetFormattingPlugin(),
         new AiCopywriterPlugin({
             isLoading,
             aiCopywriters: [

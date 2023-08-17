@@ -8,6 +8,7 @@ module.exports = {
             version: 'detect',
         },
     },
+    ignorePatterns: ['src/GraphQL/**/*.ts'],
     overrides: [
         {
             files: ['*.js', '*.ts', '*.tsx'],
