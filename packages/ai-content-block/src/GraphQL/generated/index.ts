@@ -5956,6 +5956,13 @@ export type EnhancedTextPromptedQueryVariables = Exact<{
 
 export type EnhancedTextPromptedQuery = { __typename?: 'RootQuery', enhancedText: { __typename?: 'EnhancedText', prompted?: string | null } };
 
+export type GuidelineDocumentSummaryQueryVariables = Exact<{
+  brandId: Scalars['ID']['input'];
+}>;
+
+
+export type GuidelineDocumentSummaryQuery = { __typename?: 'RootQuery', brand?: { __typename?: 'Brand', guidelines?: { __typename?: 'GuidelineItems', items?: Array<{ __typename?: 'Guideline', name?: string | null, pages: { __typename?: 'GuidelinePageItems', items?: Array<{ __typename?: 'GuideLinePage', name: string, summary?: string | null } | null> | null } } | null> | null } | null } | null };
+
 export type GetSavedLibraryAssetsQueryVariables = Exact<{
   projectId: Scalars['ID']['input'];
   externalId: Scalars['ID']['input'];
@@ -6772,6 +6779,21 @@ export const enhancedTextKeyTakeawaysExecutor = (variables: EnhancedTextKeyTakea
 export const enhancedTextPromptedExecutor = (variables: EnhancedTextPromptedQueryVariables) => requester<EnhancedTextPromptedQuery, EnhancedTextPromptedQueryVariables>(`query EnhancedTextPrompted($text: String!) {
   enhancedText(text: $text) {
     prompted
+  }
+} `, variables)
+export const guidelineDocumentSummaryExecutor = (variables: GuidelineDocumentSummaryQueryVariables) => requester<GuidelineDocumentSummaryQuery, GuidelineDocumentSummaryQueryVariables>(`query GuidelineDocumentSummary($brandId: ID!) {
+  brand(id: $brandId) {
+    guidelines(limit: 1) {
+      items {
+        name
+        pages(limit: 1) {
+          items {
+            name
+            summary
+          }
+        }
+      }
+    }
   }
 } `, variables)
 
@@ -8442,6 +8464,39 @@ export const useEnhancedTextPromptedQuery = <
     );
 
 useEnhancedTextPromptedQuery.getKey = (variables: EnhancedTextPromptedQueryVariables) => ['EnhancedTextPrompted', variables];
+;
+
+export const GuidelineDocumentSummaryDocument = `
+    query GuidelineDocumentSummary($brandId: ID!) {
+  brand(id: $brandId) {
+    guidelines(limit: 1) {
+      items {
+        name
+        pages(limit: 1) {
+          items {
+            name
+            summary
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export const useGuidelineDocumentSummaryQuery = <
+      TData = GuidelineDocumentSummaryQuery,
+      TError = unknown
+    >(
+      variables: GuidelineDocumentSummaryQueryVariables,
+      options?: UseQueryOptions<GuidelineDocumentSummaryQuery, TError, TData>
+    ) =>
+    useQuery<GuidelineDocumentSummaryQuery, TError, TData>(
+      ['GuidelineDocumentSummary', variables],
+      fetcher<GuidelineDocumentSummaryQuery, GuidelineDocumentSummaryQueryVariables>(GuidelineDocumentSummaryDocument, variables),
+      options
+    );
+
+useGuidelineDocumentSummaryQuery.getKey = (variables: GuidelineDocumentSummaryQueryVariables) => ['GuidelineDocumentSummary', variables];
 ;
 
 export const GetSavedLibraryAssetsDocument = `

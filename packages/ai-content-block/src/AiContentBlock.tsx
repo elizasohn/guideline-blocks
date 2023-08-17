@@ -23,22 +23,22 @@ import {
     UnderlinePlugin,
     UnorderedListPlugin,
 } from '@frontify/fondue';
-import { useDrunken, useKeytakeaways, usePrompted, useProperEnglish, useShortener } from './hooks';
-import { useTranslator } from './hooks/useTranslator';
+import { useDrunken, useKeytakeaways, usePrompted, useProperEnglish, useShortener, useTranslator } from './hooks';
 import { AiCopywriterPlugin } from './Plugin/AiCopyWriterPlugin';
 import { AllTextStylePlugins, AllTextStyles, ButtonPlugin, LinkPlugin } from '@frontify/guideline-blocks-shared';
 
 export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
     const isEditing = useEditorState(appBridge);
     const [blockSettings, setBlockSettings] = useBlockSettings<Settings>(appBridge);
+    //const documentId = document.body.dataset.document ?? '';
     const { drunken, isDrunkenLoading } = useDrunken();
     const { shortener, isShortenerLoading } = useShortener();
     const { properEnglish, isProperEnglishLoading } = useProperEnglish();
     const { prompted, isPromptedLoading } = usePrompted();
     const { translate, isTranslatorLoading } = useTranslator('swissGerman');
     const { keytakeaways, isKeytakeawaysLoading } = useKeytakeaways();
+    //const { documentSummarizer, isDocumentSummarizerLoading } = useDocumentSummarizer(documentId);
     const { content } = blockSettings;
-
     const isLoading =
         isDrunkenLoading ||
         isShortenerLoading ||
@@ -103,6 +103,10 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
                     label: 'Make this shorter',
                     function: shortener,
                 },
+                /*{
+                    label: 'Summarize this document',
+                    function: documentSummarizer,
+                },*/
             ],
         }),
     ]);
