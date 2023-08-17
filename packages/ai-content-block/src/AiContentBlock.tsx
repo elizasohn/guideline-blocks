@@ -12,13 +12,8 @@ import {
     BoldPlugin,
     CheckboxListPlugin,
     CodePlugin,
-    Heading1Plugin,
-    Heading2Plugin,
-    Heading3Plugin,
-    Heading4Plugin,
     ItalicPlugin,
     OrderedListPlugin,
-    ParagraphPlugin,
     PluginComposer,
     ResetFormattingPlugin,
     RichTextEditor,
@@ -29,9 +24,9 @@ import {
     UnorderedListPlugin,
 } from '@frontify/fondue';
 import { useDrunken, useProperEnglish, useShortener, useSummarizer } from './hooks';
-import { BlockStyles } from './styles';
 import { useTranslator } from './hooks/useTranslator';
 import { AiCopywriterPlugin } from './Plugin/AiCopyWriterPlugin';
+import { AllTextStylePlugins, AllTextStyles } from '@frontify/guideline-blocks-shared';
 
 export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
     const isEditing = useEditorState(appBridge);
@@ -49,23 +44,7 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
     const plugins = new PluginComposer();
     plugins.setPlugin([
         new TextStylePlugin({
-            textStyles: [
-                new Heading1Plugin({
-                    styles: BlockStyles.heading1,
-                }),
-                new Heading2Plugin({
-                    styles: BlockStyles.heading2,
-                }),
-                new Heading3Plugin({
-                    styles: BlockStyles.heading3,
-                }),
-                new Heading4Plugin({
-                    styles: BlockStyles.heading4,
-                }),
-                new ParagraphPlugin({
-                    styles: BlockStyles.p,
-                }),
-            ],
+            textStyles: AllTextStylePlugins,
         }),
         new SoftBreakPlugin(),
         new BoldPlugin(),
@@ -73,10 +52,18 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
         new UnderlinePlugin(),
         new StrikethroughPlugin(),
         new CodePlugin(),
-        new AlignLeftPlugin(),
-        new AlignCenterPlugin(),
-        new AlignRightPlugin(),
-        new AlignJustifyPlugin(),
+        new AlignLeftPlugin({
+            validTypes: AllTextStyles,
+        }),
+        new AlignCenterPlugin({
+            validTypes: AllTextStyles,
+        }),
+        new AlignRightPlugin({
+            validTypes: AllTextStyles,
+        }),
+        new AlignJustifyPlugin({
+            validTypes: AllTextStyles,
+        }),
         new UnorderedListPlugin(),
         new CheckboxListPlugin(),
         new OrderedListPlugin(),
