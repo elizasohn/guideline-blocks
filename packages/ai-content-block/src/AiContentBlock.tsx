@@ -118,6 +118,7 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
             border={false}
             plugins={plugins}
             onTextChange={(content: string) => setBlockSettings({ content })}
+            placeholder="Add your text or prompt here...."
         />
     );
 };
