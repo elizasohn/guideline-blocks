@@ -96,7 +96,7 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
                     function: properEnglish,
                 },
                 {
-                    label: 'add Key Takeaways',
+                    label: 'Add Key Takeaways',
                     function: keytakeaways,
                 },
                 {
