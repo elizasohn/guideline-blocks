@@ -23,12 +23,25 @@ import {
     UnderlinePlugin,
     UnorderedListPlugin,
 } from '@frontify/fondue';
-import { useDrunken, useKeytakeaways, usePrompted, useProperEnglish, useShortener, useTranslator } from './hooks';
+import {
+    useDrunken,
+    useKeytakeaways,
+    usePageSummarizer,
+    usePrompted,
+    useProperEnglish,
+    useShortener,
+    useTranslator,
+} from './hooks';
 import { AiCopywriterPlugin } from './Plugin/AiCopyWriterPlugin';
 import { AllTextStylePlugins, AllTextStyles, ButtonPlugin, LinkPlugin } from '@frontify/guideline-blocks-shared';
 
 export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
     const isEditing = useEditorState(appBridge);
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const documentPageId = `${window.application.config.context.pageId}`;
+
     const [blockSettings, setBlockSettings] = useBlockSettings<Settings>(appBridge);
     //const documentId = document.body.dataset.document ?? '';
     const { drunken, isDrunkenLoading } = useDrunken();
@@ -37,7 +50,7 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
     const { prompted, isPromptedLoading } = usePrompted();
     const { translate, isTranslatorLoading } = useTranslator('swissGerman');
     const { keytakeaways, isKeytakeawaysLoading } = useKeytakeaways();
-    //const { documentSummarizer, isDocumentSummarizerLoading } = useDocumentSummarizer(documentId);
+    const { pageSummarizer, isPageSummarizerLoading } = usePageSummarizer(documentPageId);
     const { content } = blockSettings;
     const isLoading =
         isDrunkenLoading ||
@@ -45,6 +58,7 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
         isProperEnglishLoading ||
         isTranslatorLoading ||
         isKeytakeawaysLoading ||
+        isPageSummarizerLoading ||
         isPromptedLoading;
 
     const plugins = new PluginComposer();
@@ -103,10 +117,10 @@ export const AiContentBlock = ({ appBridge }: BlockProps): ReactElement => {
                     label: 'Make this shorter',
                     function: shortener,
                 },
-                /*{
-                    label: 'Summarize this document',
-                    function: documentSummarizer,
-                },*/
+                {
+                    label: 'Summarize Page',
+                    function: pageSummarizer,
+                },
             ],
         }),
     ]);
